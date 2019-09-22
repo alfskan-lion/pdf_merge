@@ -1,7 +1,6 @@
 <h1>PDF 다운로드</h1>
 <p>[PDF 다운로드]를 누르면 병합된/세탁된 PDF를 다운로드 합니다.</p>
-<p>[처음으로]를 누르면 현재 파일들을 삭제한 후 PDF 업로드 페이지로 이동합니다.<br>
-(아직 고오급 기술이 없어 자동 삭제를 못하고 있사오니 이용하신 후에는 꼭...)</p>
+<p>[처음으로]를 누르면 PDF 업로드 페이지로 이동합니다.</p>
 <br>
 <%= link_to 'PDF 다운로드', download_pdf_path(@id, @index_id) %><br>
 <%= link_to '처음으로', pdf_path(@id), method: :DELETE %>
