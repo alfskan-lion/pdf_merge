@@ -1,0 +1,256 @@
+  <div class="hidden">
+    <ol class="bates_file_table_list" id="demo" style="display:none;">
+      <li id="file_NUM">
+        <div>
+          <input id="file_NUM_name" name="file[NUM][name]" readonly="readonly" type="text" value="FILE_NAME">
+          <input id="file_NUM_data" name="file[NUM][data]" type="hidden" value="NUM">
+        </div>
+        <div>
+          <input id="file_NUM_date" name="file[NUM][date]" type="text" value="DATE">
+        </div>
+        <div>
+          <input id="file_NUM_title" name="file[NUM][title]" type="text" value="TITLE">
+        </div>
+          "||"
+        <a href="#" onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false;" style="float:right">[x]</a>
+      </li>
+    </ol>
+    <form accept-charset="UTF-8" action="/bates" enctype="multipart/form-data" method="post" onsubmit="onSubmit()">
+      <h1 id="dropzone">Drag PDF files here</h1>
+      <p></p>
+      <ul class="bates_file_table_list">
+        <li>
+          <div>File Name</div>
+          <div>Date</div>
+          <div>Title</div>
+        </li>
+      </ul>
+      <input checked="checked" id="bates_first_pdf_is_cover" name="bates[first_pdf_is_cover]" type="checkbox" value="true">
+      <label for="bates_first_pdf_is_cover">First PDF file is a prefix (won't be indexed).</label>
+      <ol class="bates_file_table_list" id="file_list"></ol>
+      <input type="submit" value="Submit">
+      <h3>More Options for the <a href="https://github.com/boazsegev/combine_pdf">combine_pdf gem</a></h3>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              Output file name:
+            </td>
+            <td>
+              <input name="bates[output]" type="text" value="20190921 demo">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              First page number:
+            </td>
+            <td>
+              <input name="bates[first_page_number]" type="number" value="1">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              First index number:
+            </td>
+            <td>
+              <input name="bates[first_index_number]" type="number" value="1">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Numbering:
+            </td>
+            <td>
+              <select id="numbering" name="bates[numbering]">
+                <option value="0">Center</option>
+                <option value="1">Left</option>
+                <option value="2">Right</option>
+                <option value="3">None (merge without indexing)</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input checked="checked" id="bates_should_index_files" name="bates[should_index]" type="checkbox" value="true">
+              <label for="bates_should_index_files"> Index Files</label>
+            </td>
+            <td>
+              <label for="bates_should_index_files">un-check to avoid an index and title pages.</label>
+            </td>
+          </tr>
+          <tr>
+            <td>Text Direction:</td>
+            <td>
+              <select id="dir" name="bates[dir]">
+                <option value="">Left to Right</option>
+                <option value="rtl">Right to Left</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Index Title:
+            </td>
+            <td>
+              <input name="bates[index_title]" type="text" value="Index">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              "Number" Header:
+            </td>
+            <td>
+              <input name="bates[number_header]" type="text" value="#">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              "Date" Header (Leave empty to ignore):
+            </td>
+            <td>
+              <input name="bates[date_header]" type="text" value="Date">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              "Title" Header:
+            </td>
+            <td>
+              <input name="bates[title_header]" type="text" value="Title">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              "Page Number" Header:
+            </td>
+            <td>
+              <input name="bates[page_header]" type="text" value="Page">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Cover Page Title:
+            </td>
+            <td>
+              <input name="bates[title_type]" type="text" value="Exhibit">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+  <script>
+    function onSubmit()
+    {
+      return true;
+    }
+    file_i=0
+    files_read = 0
+    
+    template = document.getElementById('demo').innerHTML
+    
+    function transform_file(file)
+    {
+      // Get Time and Title if the name matches standard naming
+      obj_date_string = file.name.match("^[0-9]*") + ""
+      if(obj_date_string.length != 8) obj_date_string = null
+      if(obj_date_string)
+      {
+        obj_date = obj_date_string.substr(6,2) + "." + obj_date_string.substr(4,2) + "." + obj_date_string.substr(0,4)
+        obj_description = file.name.substring(9, file.name.toLowerCase().search("\.pdf") )
+      }
+      else
+      {
+        obj_date = ""
+        obj_description = file.name.substring(0, file.name.toLowerCase().search("\.pdf") )
+      }
+    
+      // copy template and adjust details
+    
+      document.getElementById('file_list').innerHTML += template.replace(RegExp("NUM", "g"), "" + file_i).replace(RegExp("FILE_NAME", "g"), file.name).replace(RegExp("DATE", "g"), obj_date).replace(RegExp("TITLE", "g"), obj_description)
+    
+      // set reader for file
+      reader = new FileReader();
+      reader.futureObject = document.getElementById("file_" + file_i + "_data")
+    
+      file_i += 1;
+    
+      reader.onloadend = function(e)
+      {
+        //var id = this.futureObject.value
+        console.log("adding result to: " + this.futureObject.id )
+        document.getElementById(this.futureObject.id).value = e.target.result
+        files_read +=1
+      }
+    
+      //reader.readAsText(file)
+      reader.readAsDataURL(file)
+      true
+    }
+    
+    // make drop_zone droppable and set callbacks
+    var dropzone = document.getElementById('dropzone')
+    
+    dropzone.ondragend = function (event) {event.stopPropagation();return false; };
+    dropzone.ondragover = function (event) {event.stopPropagation();return false; };
+    dropzone.ondragenter = function (event) {event.stopPropagation();return false; };
+    
+    dropzone.ondrop = function(event) {
+      event.preventDefault()
+      event.stopPropagation();
+      var files = event.dataTransfer.files; // FileList object.
+      i = 0
+      while(files[i])
+      {
+        console.log('transforming:' + files[i] + ' name: ' + files[i].name.toLowerCase())
+        if( files[i].name.toLowerCase().search("\.pdf") != -1) transform_file(files[i])
+        i++
+      }
+    
+      set_list_sotrable()
+      return false;
+    }
+    
+    // make drag-drop and sortable list from file_list
+    var Dragged_id = ''
+    
+    function start_drag_list_item(e) {
+      Dragged_id = this.id
+      e.dataTransfer.setData('text/plain', this.id)
+      this.style.opacity = '0.3'
+    }
+    function end_drag_list_item(e) {
+      this.style.opacity = '1'
+      Dragged_id = ''
+    }
+    function enter_drag_list_item(e) {
+      if(Dragged_id == '') return false;
+      if(this.id == Dragged_id) return false; //this.style.opacity = '0.7'
+      this.parentNode.insertBefore(this.parentNode.removeChild(document.getElementById(Dragged_id)), this);
+    }
+    function leave_drag_list_item(e) {
+      if(Dragged_id == '') return false;
+      if(this.id != Dragged_id) this.style.opacity = '1'
+    }
+    function drop_list_item(e)
+    {
+      e.stopPropagation()
+      e.preventDefault()
+      alert('move ' + Dragged_id + ' before ' + this.id)
+      if (this.id == Dragged_id) return false;
+    }
+    function set_list_sotrable()
+    {
+      all_list_items = document.querySelectorAll('#file_list li');
+      for(i=0; i < all_list_items.length; i++)
+      {
+        all_list_items[i].setAttribute("draggable","true");
+        all_list_items[i].ondragstart = start_drag_list_item
+        all_list_items[i].ondragenter = enter_drag_list_item
+        all_list_items[i].ondragleave = leave_drag_list_item
+        all_list_items[i].ondragend = end_drag_list_item
+        all_list_items[i].ondrop = drop_list_item
+      }
+    }
+  </script>

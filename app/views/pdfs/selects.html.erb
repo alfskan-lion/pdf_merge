@@ -1,0 +1,14 @@
+<h1>첫 문서 선택하기</h1>
+<p>맨 처음에 올 PDF 파일을 선택한 후 [PDF 병합하기]를 누릅니다.</p>
+<p>전자서명 세탁을 위해 1개만 업로드했다면 별도 선택없이 [PDF 병합하기]를 누릅니다.</p>
+<br>
+<%= form_tag(merge_path(@id), :method => "GET") do %>
+  <p>
+    <% @pdfs.each do |p| %>
+      <%= radio_button_tag(:index, "#{p.index}") %>
+      <%= label_tag(:index, "#{p.identifier}") %>
+      <br>
+    <% end %>
+  </p>
+  <%= submit_tag("PDF 병합하기") %>
+<% end %>
