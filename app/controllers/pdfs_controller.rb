@@ -1,6 +1,7 @@
 class PdfsController < ApplicationController
   require 'RMagick'
   include Magick
+  
   before_action :set_pdfs, only: [:selects, :merge, :download_pdf]
   
   def index
@@ -66,6 +67,7 @@ class PdfsController < ApplicationController
       pdf << CombinePDF.load("public/uploads/pdf/#{params[:id]}/washed_#{i}.pdf") 
     end
     pdf.save "public/uploads/pdf/#{params[:id]}/merged.pdf"
+    HardWorker.perform_at(3.minutes.from_now, params[:id])
     redirect_to download_path(params[:id], index)
   end
   

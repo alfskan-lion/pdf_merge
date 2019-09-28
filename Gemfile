@@ -5,7 +5,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rmagick', :require => 'rmagick'
+gem 'sidekiq'
+gem 'rmagick', '4.0.0', :require => 'Rmagick'
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'carrierwave'
