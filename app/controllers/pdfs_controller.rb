@@ -68,7 +68,7 @@ class PdfsController < ApplicationController
     for i in 0..pdf_img_list.length
       pdf << CombinePDF.load("public/uploads/pdf/#{params[:id]}/washed_#{i}.pdf") 
     end
-    pdf.save "public/uploads/pdf/#{params[:id]}/#{@pdfs.first.file.basename}_combined.pdf"
+    pdf.save "public/uploads/pdf/#{params[:id]}/merged.pdf"
     redirect_to download_path(params[:id], index)
   end
   
@@ -80,8 +80,8 @@ class PdfsController < ApplicationController
   def download_pdf
     index = params[:index_id].to_i
     send_file(
-    "public/uploads/pdf/#{params[:id]}/#{@pdfs[index].file.basename}_combined.pdf",
-    filename: "#{@pdfs[index].file.basename}_combined.pdf",
+    "public/uploads/pdf/#{params[:id]}/merged.pdf",
+    filename: "merged.pdf",
     type: "application/pdf"
     )
   end
