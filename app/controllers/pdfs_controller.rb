@@ -34,7 +34,7 @@ class PdfsController < ApplicationController
     end
     for i in 0..@pdfs.length-1
       pdf = Magick::ImageList.new("public/uploads/pdf/#{params[:id]}/#{@pdfs[i].identifier}") do
-        self.quality = 80
+        # self.quality = 80
         self.density = "300"
       end
       unless i == 0
@@ -60,10 +60,7 @@ class PdfsController < ApplicationController
         pdf.write("public/uploads/pdf/#{params[:id]}/washed_#{i}.pdf")
       end
     end
-    # for i in 0..@pdfs.length-1
-    #   pdf << CombinePDF.load("public/uploads/pdf/#{params[:id]}/#{@pdfs[i].identifier}") 
-    # end
-    # pdf.save "public/uploads/pdf/#{params[:id]}/#{@pdfs.first.file.basename}_combined.pdf"
+    
     pdf = CombinePDF.new
     for i in 0..pdf_img_list.length
       pdf << CombinePDF.load("public/uploads/pdf/#{params[:id]}/washed_#{i}.pdf") 
