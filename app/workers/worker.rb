@@ -1,4 +1,4 @@
-class HardWorker
+class FileDestroyWorker
   include Sidekiq::Worker
 
   def perform(index)

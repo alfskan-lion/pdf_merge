@@ -36,7 +36,7 @@ class PdfsController < ApplicationController
     for i in 0..@pdfs.length-1
       pdf = Magick::ImageList.new("public/uploads/pdf/#{params[:id]}/#{@pdfs[i].identifier}") do
         # self.quality = 80
-        self.density = "300"
+        self.density = "150"
       end
       unless i == 0
         FileUtils.mkdir_p "public/uploads/pdf/#{params[:id]}/pdf_img"
@@ -61,13 +61,18 @@ class PdfsController < ApplicationController
         pdf.write("public/uploads/pdf/#{params[:id]}/washed_#{i}.pdf")
       end
     end
-    
+
     pdf = CombinePDF.new
-    for i in 0..pdf_img_list.length
-      pdf << CombinePDF.load("public/uploads/pdf/#{params[:id]}/washed_#{i}.pdf") 
+    if @pdfs.length > 1
+      for i in 0..pdf_img_list.length
+        pdf << CombinePDF.load("public/uploads/pdf/#{params[:id]}/washed_#{i}.pdf") 
+      end
+    else
+        pdf << CombinePDF.load("public/uploads/pdf/#{params[:id]}/washed_#{i}.pdf") 
     end
     pdf.save "public/uploads/pdf/#{params[:id]}/merged.pdf"
-    HardWorker.perform_at(3.minutes.from_now, params[:id])
+
+    #FileDestroyWorker.perform_at(3.minutes.from_now, params[:id])
     redirect_to download_path(params[:id], index)
   end
   
