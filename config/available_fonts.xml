@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<typemap>
+
+  <type
+     format="otf"
+     name="AdobeMyungjoStd-Medium"
+     glyphs="/home/ubuntu/environment/pdf_merge/.fonts/AdobeMyungjoStd-Medium.otf"
+     />
+
+  <type
+     format="ttf"
+     name="D2Coding"
+     fullname="D2Coding"
+     family="D2Coding"
+     glyphs="/home/ubuntu/environment/pdf_merge/.fonts/D2Coding-Ver1.3.2-20180524.ttf"
+     />
+
+  <type
+     format="ttf"
+     name="GotischWeissUNZ1AI"
+     fullname="GotischWeissUNZ1A-Italic"
+     family="Gotisch Weiss UNZ1A"
+     glyphs="/home/ubuntu/environment/pdf_merge/.fonts/Gotisch Weiss b.ttf"
+     />
+
+</typemap>
