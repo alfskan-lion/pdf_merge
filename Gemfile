@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'sidekiq'
-gem 'rmagick', '4.0.0', :require => 'Rmagick'
+gem 'rmagick', :require => 'rmagick'
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'carrierwave'

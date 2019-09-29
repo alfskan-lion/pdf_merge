@@ -225,7 +225,7 @@ DEPENDENCIES
   pg (= 1.1.4)
   puma (~> 3.7)
   rails (~> 5.1.7)
-  rmagick
+  rmagick (= 4.0.0)
   sass-rails (~> 5.0)
   selenium-webdriver
   sidekiq
