@@ -44,4 +44,12 @@ class PdfUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
+  # def filename
+  #   filename_arr = original_filename.chars
+  #   if original_filename.present? && filename_arr.length > 100
+  #     "#{filename_arr[0..100].join}"
+  #   else
+  #     "#{original_filename}"
+  #   end
+  # end
 end

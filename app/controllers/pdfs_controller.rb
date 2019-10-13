@@ -1,7 +1,7 @@
 class PdfsController < ApplicationController
   require 'RMagick'
   include Magick
-  
+
   before_action :set_pdfs, only: [:selects, :merge, :download_pdf]
   
   def index
@@ -13,12 +13,14 @@ class PdfsController < ApplicationController
   
   def create
     if params[:pdf] == nil 
-      return redirect_to new_pdf_path 
+      redirect_to new_pdf_path 
+    # elsif params[:pdf][1][3].split("").length > 200
+    #   redirect_to new_pdf_path(@pdf.id), notice: "파일명이 너무 깁니다."
     end
     @pdf = Pdf.new(pdf_params)
     
       if @pdf.save
-         redirect_to selects_path(@pdf.id), notice: "The pdf has been combined."
+         redirect_to selects_path(@pdf.id)
       else
          render :new
       end
