@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'sidekiq'
 gem 'rmagick', :require => 'rmagick'
 gem 'jquery-rails'
 gem 'bootstrap-sass'
