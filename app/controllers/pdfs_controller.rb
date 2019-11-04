@@ -20,6 +20,7 @@ class PdfsController < ApplicationController
     @pdf = Pdf.new(pdf_params)
     
       if @pdf.save
+         sleep(3.0)
          redirect_to selects_path(@pdf.id)
       else
          render :new
@@ -42,8 +43,8 @@ class PdfsController < ApplicationController
       end
       unless i == 0
         FileUtils.mkdir_p "public/uploads/pdf/#{params[:id]}/pdf_img"
-        pdf.write("public/uploads/pdf/#{params[:id]}/pdf_img/washed_#{i}.jpg")
-        pdf_img_list = Dir.glob("public/uploads/pdf/#{params[:id]}/pdf_img/*.jpg").sort
+        pdf.write("public/uploads/pdf/#{params[:id]}/pdf_img/washed_#{i}.png")
+        pdf_img_list = Dir.glob("public/uploads/pdf/#{params[:id]}/pdf_img/*.png").sort
         for i in 0..pdf_img_list.length-1
           pdf_img = Magick::ImageList.new("#{pdf_img_list[i]}")
           anno = Draw.new
